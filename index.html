@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Словарные слова ЕГЭ – карточки</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -19,7 +19,8 @@
             justify-content: center;
             align-items: center;
             background: linear-gradient(145deg, #f5f7fa 0%, #e9edf5 100%);
-            padding: 20px;
+            padding: 16px;
+            touch-action: pan-y; /* разрешаем вертикальный скролл, но не горизонтальный */
         }
 
         .container {
@@ -29,7 +30,7 @@
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(8px);
             border-radius: 48px;
-            padding: 30px 25px 35px;
+            padding: 24px 20px 30px;
             box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.3);
         }
@@ -38,14 +39,14 @@
             font-size: 1.6rem;
             font-weight: 600;
             color: #1e293b;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
             letter-spacing: -0.3px;
         }
 
         .subtitle {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #64748b;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
 
         .card-wrapper {
@@ -53,8 +54,9 @@
             width: 100%;
             aspect-ratio: 4 / 3;
             max-width: 480px;
-            margin: 0 auto 25px;
+            margin: 0 auto 20px;
             cursor: pointer;
+            touch-action: manipulation;
         }
 
         .card {
@@ -65,6 +67,7 @@
             transform-style: preserve-3d;
             border-radius: 28px;
             box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            will-change: transform;
         }
 
         .card.flipped {
@@ -105,7 +108,7 @@
             font-size: 0.85rem;
             color: #64748b;
             margin-top: 6px;
-            background: rgba(0, 0, 0, 0.03);
+            background: rgba(0,0,0,0.03);
             padding: 2px 12px;
             border-radius: 30px;
         }
@@ -113,7 +116,7 @@
         .card-front .hint {
             position: absolute;
             bottom: 18px;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: #94a3b8;
             letter-spacing: 0.3px;
             background: rgba(0, 0, 0, 0.03);
@@ -137,7 +140,7 @@
             font-size: 0.85rem;
             font-weight: 400;
             color: #94a3b8;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.08);
             padding: 4px 14px;
             border-radius: 30px;
             margin-top: 6px;
@@ -154,10 +157,10 @@
         .nav button {
             background: #ffffff;
             border: none;
-            width: 56px;
-            height: 56px;
+            width: 64px;
+            height: 64px;
             border-radius: 40px;
-            font-size: 1.8rem;
+            font-size: 2rem;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -166,23 +169,19 @@
             transition: all 0.2s ease;
             color: #1e293b;
             border: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
-        .nav button:hover {
-            background: #f1f5f9;
-            transform: scale(1.05);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            touch-action: manipulation;
+            user-select: none;
         }
 
         .nav button:active {
-            transform: scale(0.95);
+            transform: scale(0.92);
+            background: #e2e8f0;
         }
 
         .nav button:disabled {
             opacity: 0.3;
             cursor: not-allowed;
             transform: none;
-            box-shadow: none;
         }
 
         .counter {
@@ -200,86 +199,76 @@
             margin-top: 18px;
             background: #e2e8f0;
             border: none;
-            padding: 10px 28px;
+            padding: 12px 32px;
             border-radius: 40px;
-            font-size: 0.9rem;
+            font-size: 1rem;
             font-weight: 500;
             color: #1e293b;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-        }
-
-        .shuffle-btn:hover {
-            background: #cbd5e1;
-            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid rgba(255,255,255,0.4);
+            touch-action: manipulation;
+            user-select: none;
         }
 
         .shuffle-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
+            background: #cbd5e1;
         }
 
         @media (max-width: 500px) {
-            .container {
-                padding: 20px 15px;
-            }
+            .container { padding: 16px 12px 20px; }
+            .card-front .pattern { font-size: 1.6rem; }
+            .card-back .answer { font-size: 1.8rem; }
+            .nav button { width: 56px; height: 56px; font-size: 1.6rem; }
+            .card-front .hint { font-size: 0.6rem; bottom: 12px; }
+        }
 
-            .card-front .pattern {
-                font-size: 1.6rem;
-            }
-
-            .card-back .answer {
-                font-size: 1.8rem;
-            }
-
-            .nav button {
-                width: 48px;
-                height: 48px;
-                font-size: 1.4rem;
-            }
+        /* Убираем подсветку при тапе */
+        .no-tap-highlight {
+            -webkit-tap-highlight-color: transparent;
         }
     </style>
 </head>
-
 <body>
 
-    <div class="container">
-        <h1>📚 Словарные слова</h1>
-        <div class="subtitle">Нажми на карточку или пробел для переворота</div>
+<div class="container no-tap-highlight">
+    <h1>📚 Словарные слова</h1>
+    <div class="subtitle">Коснись карточки или нажми пробел (на клавиатуре)</div>
 
-        <div class="card-wrapper" id="cardWrapper">
-            <div class="card" id="card">
-                <div class="card-face card-front">
-                    <span class="pattern" id="patternDisplay"></span>
-                    <span class="note-front" id="noteFrontDisplay"></span>
-                    <span class="hint">👆 нажми, чтобы увидеть ответ</span>
-                </div>
-                <div class="card-face card-back">
-                    <span class="answer" id="answerDisplay"></span>
-                    <span class="note-back" id="noteBackDisplay"></span>
-                </div>
+    <div class="card-wrapper" id="cardWrapper">
+        <div class="card" id="card">
+            <div class="card-face card-front">
+                <span class="pattern" id="patternDisplay"></span>
+                <span class="note-front" id="noteFrontDisplay"></span>
+                <span class="hint">👆 коснись, чтобы увидеть ответ</span>
+            </div>
+            <div class="card-face card-back">
+                <span class="answer" id="answerDisplay"></span>
+                <span class="note-back" id="noteBackDisplay"></span>
             </div>
         </div>
-
-        <div class="nav">
-            <button id="prevBtn" aria-label="Предыдущая">◀</button>
-            <span class="counter" id="counter">1 / 0</span>
-            <button id="nextBtn" aria-label="Следующая">▶</button>
-        </div>
-
-        <button class="shuffle-btn" id="shuffleBtn">🔀 Перемешать</button>
     </div>
 
-    <script>
-        (function () {
-            // ---- ПРАВИЛЬНЫЕ СЛОВА (из первого сообщения) ----
-            const wordsRaw = `
+    <div class="nav">
+        <button id="prevBtn" aria-label="Предыдущая">◀</button>
+        <span class="counter" id="counter">1 / 0</span>
+        <button id="nextBtn" aria-label="Следующая">▶</button>
+    </div>
+
+    <button class="shuffle-btn" id="shuffleBtn">🔀 Перемешать</button>
+</div>
+
+<script>
+    (function() {
+        // ---- ПРАВИЛЬНЫЕ СЛОВА (из первого сообщения) ----
+        const wordsRaw = `
             абитуриент абонемент абрикос академия аквамарин акварель аккомпанемент аннотация антресоли апелляция аплодировать аппаратура аппетит аромат архитектор асфальт атмосфера аттракцион аукцион багаж багровый бадминтон баланс балкон барельеф баскетбол бассейн берёза бирюзовый богатый богатырь брошюра бюллетень вакцина вариант велосипед вентилятор вермишель вестибюль ветеран винегрет виртуальный виртуоз витраж владелец возражать вокзал волейбол воображать воплотить впечатлить выразительный выражать газон галактика галерея гармония гарнизон геолог герой гипотеза гормон горячий горизонт грамматика грамота громадный громоздкий дебаты декларация декорация деликатес деликатный демократ демонстрировать диалог диапазон динамика дирижёр диспетчер дистанция дисциплина желание жираф жокей жонглёр жюри знакомить знаменитый знаменовать игнорировать идеал иждивенец иллюзия индивид иней инженер инициатива интеллект интеллигент интенсивный интерьер исказить истина кампания (мероприятие) каморка каникулы канитель канонада канцелярия капюшон кардинальный карикатура касатка (птица семейства ласточек) катакомба катастрофа квалификация квитанция кинематограф коварный колдун колебание коллектив коллекция колоссальный колыхать комбинация комедия компания (группа людей, фирма) компетентный компонент компьютер комфорт конверт конкурент континент конференция конфликт конфорка корифей коричневый корзина король косатка (млекопитающее семейства дельфиновых) космос кромешный лабиринт легенда лелеять либерал мажор материал мгновение менталитет меридиан мероприятие метафора механизм минерал минор монолит мораторий мотив мятеж наваждение насекомые наслаждаться недосягаемый новелла обаяние обитать обнаружить обоняние оборона одолеть озорной опекун оптимист оранжерея орбита организовать оригинальный ориентир орнамент осторожный офицер ошеломить палисадник палитра панорама панцирь параграф парадокс парашют патриот пейзаж перила период пессимист подлинный подражать позиция покой поколение полемика полировать поражать поразить посещать правило предварительный презентация президент президиум преобразить преобразовать преодолеть прецедент привилегия примитивный приоритет провинция провоцировать проницательный радиатор рациональный реалист режиссёр резидент резиденция ремесло реставрация реферат реформа рецензия риторика ровесники романтичный салют сатира сварливый свидетель сезон симпатия симптом симфония синхронный сирень система смятение снарядить сокровенный сонет сострадать состязаться социальный спартакиада спокойный стадион стипендия страховать стремиться суверенитет сувенир талант теория территория торжество традиция трафарет тревога трамвай троллейбус тростник тротуар университет уникальный уничтожить утрамбовать фантастика фестиваль фигура финансы фиолетовый фрагмент фразеология хаос характер цемент цивилизация циклон цилиндр цистерна цитата человек чемпион шеренга шоколад шоссе шофёр эволюция экономика эксперимент экспонат экстремальный электроника энциклопедия эстакада (мост)
         `;
 
-            // ---- ШАБЛОНЫ (из вашего файла аб..туриент.txt) ----
-            const patternsFromFile = `
+        // ---- ШАБЛОНЫ (из вашего файла аб..туриент.txt) ----
+        const patternsFromFile = `
             аб..туриент
             аб..н..мент
             абр..кос
@@ -590,150 +579,230 @@
             эст..када (мост)
         `;
 
-            // ---- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ РАЗБОРА ----
-            function extractMainAndNote(str) {
-                // Ищем шаблон "основа (пояснение)"
-                const match = str.match(/^([^\s(]+)\s*\(([^)]*)\)$/);
-                if (match) {
-                    return { main: match[1], note: `(${match[2]})` };
-                } else {
-                    return { main: str, note: '' };
-                }
+        // ---- ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ РАЗБОРА ----
+        function extractMainAndNote(str) {
+            const match = str.match(/^([^\s(]+)\s*\(([^)]*)\)$/);
+            if (match) {
+                return { main: match[1], note: `(${match[2]})` };
+            } else {
+                return { main: str, note: '' };
+            }
+        }
+
+        // ---- ПАРСИНГ ----
+        const wordMatches = wordsRaw.match(/(?:[^\s(]+\s*\([^)]*\)|[^\s]+)/g);
+        const wordList = wordMatches ? wordMatches.map(w => w.trim()) : [];
+
+        const patternList = patternsFromFile.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0);
+
+        const minLen = Math.min(wordList.length, patternList.length);
+        const pairs = [];
+        for (let i = 0; i < minLen; i++) {
+            const p = extractMainAndNote(patternList[i]);
+            const w = extractMainAndNote(wordList[i]);
+            pairs.push({
+                patternMain: p.main,
+                patternNote: p.note,
+                wordMain: w.main,
+                wordNote: w.note
+            });
+        }
+
+        // ---- СОСТОЯНИЕ ----
+        let currentIndex = 0;
+        let cards = [...pairs];
+
+        const cardEl = document.getElementById('card');
+        const patternDisplay = document.getElementById('patternDisplay');
+        const noteFrontDisplay = document.getElementById('noteFrontDisplay');
+        const answerDisplay = document.getElementById('answerDisplay');
+        const noteBackDisplay = document.getElementById('noteBackDisplay');
+        const counterEl = document.getElementById('counter');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const cardWrapper = document.getElementById('cardWrapper');
+
+        function updateCard(index) {
+            const item = cards[index];
+            if (!item) return;
+
+            patternDisplay.textContent = item.patternMain;
+            if (item.patternNote) {
+                noteFrontDisplay.textContent = item.patternNote;
+                noteFrontDisplay.style.display = 'block';
+            } else {
+                noteFrontDisplay.style.display = 'none';
             }
 
-            // ---- ПАРСИНГ ----
-            // Правильные слова: разбиваем, сохраняя скобочные группы целиком
-            const wordMatches = wordsRaw.match(/(?:[^\s(]+\s*\([^)]*\)|[^\s]+)/g);
-            const wordList = wordMatches ? wordMatches.map(w => w.trim()) : [];
-
-            // Шаблоны: разбиваем по строкам, убираем пустые
-            const patternList = patternsFromFile.split('\n')
-                .map(line => line.trim())
-                .filter(line => line.length > 0);
-
-            // Обрезаем до минимальной длины
-            const minLen = Math.min(wordList.length, patternList.length);
-            if (wordList.length !== patternList.length) {
-                console.warn(`Количество слов (${wordList.length}) и шаблонов (${patternList.length}) не совпадает. Используем ${minLen} пар.`);
-            }
-            const pairs = [];
-            for (let i = 0; i < minLen; i++) {
-                const p = extractMainAndNote(patternList[i]);
-                const w = extractMainAndNote(wordList[i]);
-                pairs.push({
-                    patternMain: p.main,
-                    patternNote: p.note,
-                    wordMain: w.main,
-                    wordNote: w.note
-                });
+            answerDisplay.textContent = item.wordMain;
+            if (item.wordNote) {
+                noteBackDisplay.textContent = item.wordNote;
+                noteBackDisplay.style.display = 'block';
+            } else {
+                noteBackDisplay.style.display = 'none';
             }
 
-            // ---- СОСТОЯНИЕ ----
-            let currentIndex = 0;
-            let cards = [...pairs];
+            cardEl.classList.remove('flipped');
+            counterEl.textContent = `${index + 1} / ${cards.length}`;
+            prevBtn.disabled = (index === 0);
+            nextBtn.disabled = (index === cards.length - 1);
+        }
 
-            // Элементы DOM
-            const cardEl = document.getElementById('card');
-            const patternDisplay = document.getElementById('patternDisplay');
-            const noteFrontDisplay = document.getElementById('noteFrontDisplay');
-            const answerDisplay = document.getElementById('answerDisplay');
-            const noteBackDisplay = document.getElementById('noteBackDisplay');
-            const counterEl = document.getElementById('counter');
-            const prevBtn = document.getElementById('prevBtn');
-            const nextBtn = document.getElementById('nextBtn');
-            const shuffleBtn = document.getElementById('shuffleBtn');
-            const cardWrapper = document.getElementById('cardWrapper');
-
-            function updateCard(index) {
-                const item = cards[index];
-                if (!item) return;
-
-                patternDisplay.textContent = item.patternMain;
-                if (item.patternNote) {
-                    noteFrontDisplay.textContent = item.patternNote;
-                    noteFrontDisplay.style.display = 'block';
-                } else {
-                    noteFrontDisplay.textContent = '';
-                    noteFrontDisplay.style.display = 'none';
-                }
-
-                answerDisplay.textContent = item.wordMain;
-                if (item.wordNote) {
-                    noteBackDisplay.textContent = item.wordNote;
-                    noteBackDisplay.style.display = 'block';
-                } else {
-                    noteBackDisplay.textContent = '';
-                    noteBackDisplay.style.display = 'none';
-                }
-
-                cardEl.classList.remove('flipped');
-                counterEl.textContent = `${index + 1} / ${cards.length}`;
-                prevBtn.disabled = (index === 0);
-                nextBtn.disabled = (index === cards.length - 1);
-            }
-
-            function showNext() {
-                if (currentIndex < cards.length - 1) {
-                    currentIndex++;
-                    updateCard(currentIndex);
-                }
-            }
-
-            function showPrev() {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateCard(currentIndex);
-                }
-            }
-
-            function shuffleCards() {
-                for (let i = cards.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [cards[i], cards[j]] = [cards[j], cards[i]];
-                }
-                currentIndex = 0;
+        function showNext() {
+            if (currentIndex < cards.length - 1) {
+                currentIndex++;
                 updateCard(currentIndex);
             }
+        }
 
-            // Клик по карточке – переворот
-            cardWrapper.addEventListener('click', function () {
-                cardEl.classList.toggle('flipped');
-            });
-
-            // Кнопки
-            prevBtn.addEventListener('click', showPrev);
-            nextBtn.addEventListener('click', showNext);
-            shuffleBtn.addEventListener('click', shuffleCards);
-
-            // Клавиатура: стрелки и пробел
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'ArrowLeft') {
-                    e.preventDefault();
-                    showPrev();
-                } else if (e.key === 'ArrowRight') {
-                    e.preventDefault();
-                    showNext();
-                } else if (e.key === ' ' || e.key === 'Spacebar') {
-                    e.preventDefault(); // отключаем прокрутку страницы
-                    cardEl.classList.toggle('flipped');
-                }
-            });
-
-            // ---- ИНИЦИАЛИЗАЦИЯ ----
-            if (cards.length === 0) {
-                patternDisplay.textContent = 'Нет данных';
-                answerDisplay.textContent = 'Ошибка загрузки';
-                noteFrontDisplay.style.display = 'none';
-                noteBackDisplay.style.display = 'none';
-                counterEl.textContent = '0 / 0';
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
-            } else {
-                updateCard(0);
+        function showPrev() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateCard(currentIndex);
             }
-        })();
-    </script>
+        }
 
+        function shuffleCards() {
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
+            }
+            currentIndex = 0;
+            updateCard(currentIndex);
+        }
+
+        // ---- ОБРАБОТЧИКИ ДЛЯ ТЕЛЕФОНА (touch + клик без задержки) ----
+        function toggleFlip(e) {
+            e.preventDefault();
+            cardEl.classList.toggle('flipped');
+        }
+
+        // Поддержка касания и клика (чтобы работало на всех устройствах)
+        cardWrapper.addEventListener('click', toggleFlip);
+        cardWrapper.addEventListener('touchstart', function(e) {
+            // Если это не скольжение (свайп), то переворачиваем
+            // Но мы хотим переворачивать только при касании, а не при свайпе.
+            // Поэтому отключаем переворот при свайпе.
+            let startX = 0, startY = 0;
+            const touchStart = function(ev) {
+                startX = ev.touches[0].clientX;
+                startY = ev.touches[0].clientY;
+            };
+            const touchEnd = function(ev) {
+                const endX = ev.changedTouches[0].clientX;
+                const endY = ev.changedTouches[0].clientY;
+                const dx = endX - startX;
+                const dy = endY - startY;
+                // Если горизонтальное смещение больше 30px – это свайп, не переворачиваем
+                if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
+                    return;
+                }
+                // Иначе переворачиваем
+                cardEl.classList.toggle('flipped');
+            };
+            // Добавляем обработчики на время касания
+            cardWrapper.addEventListener('touchstart', touchStart, { passive: true });
+            cardWrapper.addEventListener('touchend', touchEnd, { passive: true });
+            // Чистим после выполнения, чтобы не накапливать
+            setTimeout(() => {
+                cardWrapper.removeEventListener('touchstart', touchStart);
+                cardWrapper.removeEventListener('touchend', touchEnd);
+            }, 200);
+        }, { passive: true });
+
+        // Кнопки навигации (с поддержкой touch)
+        prevBtn.addEventListener('click', showPrev);
+        prevBtn.addEventListener('touchstart', function(e) {
+            // предотвращаем дублирование
+            if (!e.touches) return;
+            e.preventDefault();
+            showPrev();
+        }, { passive: false });
+
+        nextBtn.addEventListener('click', showNext);
+        nextBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            showNext();
+        }, { passive: false });
+
+        shuffleBtn.addEventListener('click', shuffleCards);
+        shuffleBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            shuffleCards();
+        }, { passive: false });
+
+        // Клавиатура (пробел и стрелки)
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                showPrev();
+            } else if (e.key === 'ArrowRight') {
+                e.preventDefault();
+                showNext();
+            } else if (e.key === ' ' || e.key === 'Spacebar') {
+                e.preventDefault();
+                cardEl.classList.toggle('flipped');
+            }
+        });
+
+        // ---- СВАЙПЫ ДЛЯ ЛИСТАНИЯ НА ТЕЛЕФОНЕ ----
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isSwiping = false;
+
+        cardWrapper.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            isSwiping = false;
+        }, { passive: true });
+
+        cardWrapper.addEventListener('touchmove', function(e) {
+            if (!touchStartX || !touchStartY) return;
+            const dx = e.touches[0].clientX - touchStartX;
+            const dy = e.touches[0].clientY - touchStartY;
+            if (Math.abs(dx) > 20 || Math.abs(dy) > 20) {
+                isSwiping = true;
+            }
+        }, { passive: true });
+
+        cardWrapper.addEventListener('touchend', function(e) {
+            if (!isSwiping) {
+                // Если это не свайп, то переворот уже обработан выше
+                return;
+            }
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const dx = endX - touchStartX;
+            const dy = endY - touchStartY;
+            if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                // Горизонтальный свайп
+                if (dx < 0) {
+                    showNext(); // свайп влево -> следующая
+                } else {
+                    showPrev(); // свайп вправо -> предыдущая
+                }
+            }
+            touchStartX = 0;
+            touchStartY = 0;
+            isSwiping = false;
+        }, { passive: true });
+
+        // ---- ИНИЦИАЛИЗАЦИЯ ----
+        if (cards.length === 0) {
+            patternDisplay.textContent = 'Нет данных';
+            answerDisplay.textContent = 'Ошибка загрузки';
+            noteFrontDisplay.style.display = 'none';
+            noteBackDisplay.style.display = 'none';
+            counterEl.textContent = '0 / 0';
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+        } else {
+            updateCard(0);
+        }
+    })();
+</script>
 </body>
-
 </html>
