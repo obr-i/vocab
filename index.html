@@ -240,7 +240,19 @@
     </style>
 </head>
 <body>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script>
+    // Проверяем, запущено ли приложение внутри Telegram
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.ready();
+        tg.expand();
+        // Здесь можно добавить дополнительные настройки для Telegram, например, цвет фона
+    } else {
+        // Если открыто в обычном браузере, ничего не делаем или подстраиваемся
+        console.log('Запущено вне Telegram');
+    }
+</script>
 <div class="container">
     <h1>📚 Словарные слова</h1>
     <div class="subtitle">
