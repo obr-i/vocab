@@ -58,7 +58,6 @@
             }
         }
 
-        /* Слайдер без обрезания */
         .card-slider {
             position: relative;
             width: 100%;
@@ -76,8 +75,8 @@
             width: 100%;
             height: 100%;
             cursor: pointer;
-            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1),
-                        opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+                        opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
             will-change: transform, opacity;
             transform-style: preserve-3d;
             backface-visibility: hidden;
@@ -124,7 +123,6 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
         }
 
-        /* Быстрый автоматический переворот (при смене) */
         .card.fast-flip {
             transition-duration: 0.35s;
         }
@@ -293,9 +291,7 @@
         Коснись карточки<span class="hide-on-mobile"> или нажми пробел</span>
     </div>
 
-    <div class="card-slider" id="cardSlider">
-        <!-- Сюда динамически вставляется card-wrapper -->
-    </div>
+    <div class="card-slider" id="cardSlider"></div>
 
     <div class="nav">
         <button id="prevBtn" aria-label="Предыдущая">◀</button>
@@ -624,7 +620,6 @@
             эст..када (мост)
         `;
 
-        // ---- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----
         function extractMainAndNote(str) {
             const match = str.match(/^([^\s(]+)\s*\(([^)]*)\)$/);
             if (match) {
@@ -634,50 +629,37 @@
             }
         }
 
-        // ---- ПАРСИНГ ----
+        // Парсинг
         const wordMatches = wordsRaw.match(/(?:[^\s(]+\s*\([^)]*\)|[^\s]+)/g);
         const wordList = wordMatches ? wordMatches.map(w => w.trim()) : [];
-
-        const patternList = patternsFromFile.split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-
+        const patternList = patternsFromFile.split('\n').map(line => line.trim()).filter(line => line.length > 0);
         const minLen = Math.min(wordList.length, patternList.length);
         const pairs = [];
         for (let i = 0; i < minLen; i++) {
             const p = extractMainAndNote(patternList[i]);
             const w = extractMainAndNote(wordList[i]);
-            pairs.push({
-                patternMain: p.main,
-                patternNote: p.note,
-                wordMain: w.main,
-                wordNote: w.note
-            });
+            pairs.push({ patternMain: p.main, patternNote: p.note, wordMain: w.main, wordNote: w.note });
         }
 
-        // ---- DOM-ЭЛЕМЕНТЫ ----
+        // DOM
         const slider = document.getElementById('cardSlider');
         const counterEl = document.getElementById('counter');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
         const shuffleBtn = document.getElementById('shuffleBtn');
 
-        // ---- СОСТОЯНИЕ ----
         let cards = [...pairs];
         let currentIndex = 0;
-        let isAnimating = false;
         let currentWrapper = null;
         let isFlipped = false;
+        let pendingSwipe = null; // для быстрой смены
 
-        // ---- СОЗДАНИЕ КАРТОЧКИ ----
         function createCardElement(data, isActive = false) {
             const wrapper = document.createElement('div');
             wrapper.className = 'card-wrapper' + (isActive ? ' active' : '');
-
             const card = document.createElement('div');
             card.className = 'card';
 
-            // Лицевая
             const front = document.createElement('div');
             front.className = 'card-face card-front';
             const patternSpan = document.createElement('span');
@@ -696,7 +678,6 @@
             front.appendChild(hintSpan);
             card.appendChild(front);
 
-            // Оборот
             const back = document.createElement('div');
             back.className = 'card-face card-back';
             const answerSpan = document.createElement('span');
@@ -721,58 +702,45 @@
             nextBtn.disabled = (currentIndex === cards.length - 1);
         }
 
-        // ---- ПЛАВНЫЙ ПЕРЕХОД (как в Lapse) ----
+        // Мгновенная смена карточки с анимацией входа (без блокировки)
         function slideTo(index, direction) {
-            if (isAnimating) return;
             if (index < 0 || index >= cards.length) return;
             if (index === currentIndex && currentWrapper) return;
-
-            isAnimating = true;
 
             const newData = cards[index];
             const newWrapper = createCardElement(newData, false);
             slider.appendChild(newWrapper);
 
             const dir = (index > currentIndex) ? 1 : -1;
+            if (dir === 1) newWrapper.classList.add('enter-right');
+            else newWrapper.classList.add('enter-left');
 
-            if (dir === 1) {
-                newWrapper.classList.add('enter-right');
-            } else {
-                newWrapper.classList.add('enter-left');
-            }
+            // Принудительный reflow для старта анимации
+            void newWrapper.offsetWidth;
 
-            void newWrapper.offsetWidth; // reflow
-
-            const oldWrapper = currentWrapper;
-            if (oldWrapper) {
-                if (dir === 1) {
-                    oldWrapper.classList.add('exit-left');
-                } else {
-                    oldWrapper.classList.add('exit-right');
+            // Удаляем старую карточку мгновенно (без ожидания анимации)
+            if (currentWrapper) {
+                // Просто удаляем из DOM
+                if (currentWrapper.parentNode) {
+                    currentWrapper.parentNode.removeChild(currentWrapper);
                 }
-                setTimeout(() => {
-                    if (oldWrapper.parentNode) {
-                        oldWrapper.parentNode.removeChild(oldWrapper);
-                    }
-                }, 500);
             }
 
+            // Показываем новую с анимацией входа
             newWrapper.classList.remove('enter-right', 'enter-left');
             newWrapper.classList.add('active');
 
             currentWrapper = newWrapper;
             currentIndex = index;
-            isFlipped = false;
+            isFlipped = false; // новая карточка не перевёрнута
             updateUI();
 
-            setTimeout(() => {
-                isAnimating = false;
-            }, 550);
+            // Убираем класс active через небольшое время, чтобы можно было снова анимировать
+            // Но оставляем его, т.к. он определяет финальное состояние
         }
 
-        // ---- ПЕРЕВОРОТ ----
+        // Переворот
         function toggleFlip() {
-            if (isAnimating) return;
             if (!currentWrapper) return;
             const card = currentWrapper.querySelector('.card');
             if (card) {
@@ -781,7 +749,7 @@
             }
         }
 
-        // ---- НАВИГАЦИЯ ----
+        // Навигация
         function showNext() {
             if (currentIndex < cards.length - 1) {
                 slideTo(currentIndex + 1, 1);
@@ -793,13 +761,13 @@
             }
         }
 
-        // ---- ПЕРЕМЕШИВАНИЕ ----
+        // Перемешивание
         function shuffleCards() {
-            if (isAnimating) return;
             for (let i = cards.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [cards[i], cards[j]] = [cards[j], cards[i]];
             }
+            // Очищаем слайдер
             while (slider.firstChild) {
                 slider.removeChild(slider.firstChild);
             }
@@ -815,6 +783,7 @@
         let touchStartX = 0, touchStartY = 0;
         let touchMoved = false;
         let swipeHandled = false;
+        let flipTimer = null;
 
         slider.addEventListener('touchstart', function(e) {
             const touch = e.touches[0];
@@ -822,6 +791,16 @@
             touchStartY = touch.clientY;
             touchMoved = false;
             swipeHandled = false;
+
+            // Запускаем таймер для быстрого переворота (80мс)
+            if (flipTimer) clearTimeout(flipTimer);
+            flipTimer = setTimeout(() => {
+                if (!touchMoved && !swipeHandled) {
+                    // Переворот
+                    toggleFlip();
+                    flipTimer = null;
+                }
+            }, 80);
         }, { passive: true });
 
         slider.addEventListener('touchmove', function(e) {
@@ -831,10 +810,18 @@
             const dy = touch.clientY - touchStartY;
             if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
                 touchMoved = true;
+                if (flipTimer) {
+                    clearTimeout(flipTimer);
+                    flipTimer = null;
+                }
             }
         }, { passive: true });
 
         slider.addEventListener('touchend', function(e) {
+            if (flipTimer) {
+                clearTimeout(flipTimer);
+                flipTimer = null;
+            }
             if (touchMoved) {
                 const dx = e.changedTouches[0].clientX - touchStartX;
                 const dy = e.changedTouches[0].clientY - touchStartY;
@@ -845,14 +832,17 @@
                     else showPrev();
                 }
             } else {
-                e.preventDefault();
-                toggleFlip();
+                // Если не было движения и таймер не сработал (например, палец отпущен до 80мс) – всё равно переворачиваем
+                if (!swipeHandled) {
+                    toggleFlip();
+                }
             }
             touchStartX = 0;
             touchStartY = 0;
             touchMoved = false;
         }, { passive: false });
 
+        // Для десктопа – клик
         slider.addEventListener('click', function(e) {
             if (e.pointerType === 'touch' || ('ontouchstart' in window)) {
                 if (swipeHandled) {
@@ -860,7 +850,8 @@
                     swipeHandled = false;
                     return;
                 }
-                if (touchMoved === false && touchStartX !== 0) {
+                // Если было касание и оно уже обработано, игнорируем
+                if (touchStartX !== 0) {
                     e.preventDefault();
                     return;
                 }
@@ -868,26 +859,19 @@
             toggleFlip();
         });
 
-        // ---- КЛАВИАТУРА ----
+        // Клавиатура
         document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                showPrev();
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                showNext();
-            } else if (e.key === ' ' || e.key === 'Spacebar') {
-                e.preventDefault();
-                toggleFlip();
-            }
+            if (e.key === 'ArrowLeft') { e.preventDefault(); showPrev(); }
+            else if (e.key === 'ArrowRight') { e.preventDefault(); showNext(); }
+            else if (e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); toggleFlip(); }
         });
 
-        // ---- КНОПКИ ----
+        // Кнопки
         prevBtn.addEventListener('click', showPrev);
         nextBtn.addEventListener('click', showNext);
         shuffleBtn.addEventListener('click', shuffleCards);
 
-        // ---- ИНИЦИАЛИЗАЦИЯ ----
+        // Инициализация
         if (cards.length === 0) {
             counterEl.textContent = '0 / 0';
             prevBtn.disabled = true;
