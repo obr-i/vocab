@@ -256,210 +256,199 @@
                 bottom: 12px;
             }
         }
-                /* ---------- ТЁМНАЯ ТЕМА (плавные переходы, контрастная карточка) ---------- */
-        body {
-            transition: background 0.4s ease, color 0.4s ease;
-        }
+  /* ---------- ТЁМНАЯ ТЕМА (Opera GX стиль) ---------- */
+body {
+    transition: background 0.4s ease, color 0.4s ease;
+}
+.container {
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+.card-front, .card-back, .card {
+    transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav button, .shuffle-btn, .action-btn, .theme-btn, .theme-toggle {
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+.counter, .subtitle, h1, #theme-selector h2, .message {
+    transition: color 0.4s ease, background 0.4s ease;
+}
+#theme-selector {
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
 
-        .container {
-            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-        }
+/* ---- ОСНОВНОЙ ФОН (глубокий тёмно-синий с фиолетовым) ---- */
+body.dark-theme {
+    background: linear-gradient(145deg, #0b0d17 0%, #14162b 50%, #1a1a33 100%);
+}
 
-        .card-front,
-        .card-back,
-        .card {
-            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+body.dark-theme .container {
+    background: rgba(18, 20, 40, 0.85);
+    backdrop-filter: blur(14px);
+    border-color: rgba(120, 80, 255, 0.15);
+    box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(120, 80, 255, 0.1);
+}
 
-        .nav button,
-        .shuffle-btn,
-        .action-btn,
-        .theme-btn,
-        .theme-toggle {
-            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
+body.dark-theme h1 {
+    color: #e8e0ff;
+    text-shadow: 0 0 30px rgba(120, 80, 255, 0.15);
+}
 
-        .counter,
-        .subtitle,
-        h1,
-        #theme-selector h2,
-        .message {
-            transition: color 0.4s ease, background 0.4s ease;
-        }
+body.dark-theme .subtitle {
+    color: #9a8cc0;
+}
 
-        #theme-selector {
-            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-        }
+/* ---- ЛИЦЕВАЯ СТОРОНА (тёмно-синяя с фиолетовым отливом) ---- */
+body.dark-theme .card-front {
+    background: #1a1e36;
+    color: #f0ecff;
+    border-color: rgba(120, 80, 255, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(120, 80, 255, 0.06);
+}
 
-        /* ---- ТЁМНЫЙ ФОН (почти чёрный) ---- */
-        body.dark-theme {
-            background: linear-gradient(145deg, #070a12 0%, #0b0e17 100%);
-        }
+body.dark-theme .card-front .pattern {
+    color: #f5f0ff;
+    text-shadow: 0 0 20px rgba(120, 80, 255, 0.1);
+}
 
-        body.dark-theme .container {
-            background: rgba(11, 14, 23, 0.85);
-            backdrop-filter: blur(12px);
-            border-color: rgba(255, 255, 255, 0.05);
-            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7);
-        }
+body.dark-theme .card-front .note-front {
+    color: #9a8cc0;
+    background: rgba(120, 80, 255, 0.06);
+}
 
-        body.dark-theme h1 {
-            color: #e2e8f0;
-        }
+body.dark-theme .card-front .hint {
+    color: #6a5c9a;
+    background: rgba(120, 80, 255, 0.04);
+}
 
-        body.dark-theme .subtitle {
-            color: #94a3b8;
-        }
+/* ---- ОБОРОТНАЯ СТОРОНА (насыщенный фиолетовый, как в Opera GX) ---- */
+body.dark-theme .card-back {
+    background: #2a1a4a;
+    color: #f0ecff;
+    border-color: rgba(160, 120, 255, 0.2);
+    box-shadow: 0 8px 40px rgba(80, 40, 180, 0.4), inset 0 0 0 1px rgba(160, 120, 255, 0.15);
+}
 
-        /* ---- ЛИЦЕВАЯ СТОРОНА (чуть светлее фона, без контура) ---- */
-        body.dark-theme .card-front {
-            background: #1a2233;
-            /* тёмно-серый с синевой */
-            color: #f1f5f9;
-            border-color: rgba(255, 255, 255, 0.04);
-            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.4);
-        }
+body.dark-theme .card-back .answer {
+    color: #f5f0ff;
+    text-shadow: 0 0 30px rgba(160, 120, 255, 0.2);
+}
 
-        body.dark-theme .card-front .pattern {
-            color: #f8fafc;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-        }
+body.dark-theme .card-back .note-back {
+    color: #b8a8ff;
+    background: rgba(160, 120, 255, 0.08);
+}
 
-        body.dark-theme .card-front .note-front {
-            color: #94a3b8;
-            background: rgba(255, 255, 255, 0.04);
-        }
+/* ---- ЭЛЕМЕНТЫ УПРАВЛЕНИЯ ---- */
+body.dark-theme .nav button {
+    background: #262a48;
+    color: #d0c8f0;
+    border-color: rgba(120, 80, 255, 0.15);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
 
-        body.dark-theme .card-front .hint {
-            color: #64748b;
-            background: rgba(255, 255, 255, 0.03);
-        }
+body.dark-theme .nav button:active {
+    background: #343a5a;
+    box-shadow: 0 0 20px rgba(120, 80, 255, 0.2);
+}
 
-        /* ---- ОБОРОТНАЯ СТОРОНА (насыщенный фиолетовый, как Opera GX) ---- */
-        body.dark-theme .card-back {
-            background: #1f0e42;
-            /* тёмно-фиолетовый */
-            color: #f8fafc;
-            border-color: rgba(167, 139, 250, 0.15);
-            box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.1), 0 8px 40px rgba(88, 28, 135, 0.3);
-        }
+body.dark-theme .nav button:disabled {
+    opacity: 0.25;
+}
 
-        body.dark-theme .card-back .answer {
-            color: #f8fafc;
-            text-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
-        }
+body.dark-theme .counter {
+    background: rgba(26, 30, 54, 0.8);
+    color: #b8acd8;
+}
 
-        body.dark-theme .card-back .note-back {
-            color: #a78bfa;
-            background: rgba(167, 139, 250, 0.1);
-        }
+body.dark-theme .shuffle-btn,
+body.dark-theme .action-btn {
+    background: #262a48;
+    color: #d0c8f0;
+    border-color: rgba(120, 80, 255, 0.15);
+}
 
-        /* ---- КНОПКИ И ЭЛЕМЕНТЫ УПРАВЛЕНИЯ ---- */
-        body.dark-theme .nav button {
-            background: #2a3346;
-            color: #e2e8f0;
-            border-color: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-        }
+body.dark-theme .shuffle-btn:active,
+body.dark-theme .action-btn:active {
+    background: #343a5a;
+    box-shadow: 0 0 20px rgba(120, 80, 255, 0.2);
+}
 
-        body.dark-theme .nav button:active {
-            background: #3a445a;
-        }
+body.dark-theme #theme-selector {
+    background: #1a1e36;
+    border-color: rgba(120, 80, 255, 0.08);
+}
 
-        body.dark-theme .nav button:disabled {
-            opacity: 0.25;
-        }
+body.dark-theme #theme-selector h2 {
+    color: #e0d8f8;
+}
 
-        body.dark-theme .counter {
-            background: rgba(26, 34, 51, 0.8);
-            color: #cbd5e1;
-        }
+body.dark-theme .theme-btn {
+    background: #262a48;
+    color: #d0c8f0;
+    border-color: #383c60;
+}
 
-        body.dark-theme .shuffle-btn,
-        body.dark-theme .action-btn {
-            background: #2a3346;
-            color: #e2e8f0;
-            border-color: rgba(255, 255, 255, 0.06);
-        }
+body.dark-theme .theme-btn:hover {
+    background: #343a5a;
+    border-color: #5a4c8a;
+}
 
-        body.dark-theme .shuffle-btn:active,
-        body.dark-theme .action-btn:active {
-            background: #3a445a;
-        }
+body.dark-theme .theme-btn.selected {
+    border-color: #8a6aff;
+    background: #8a6aff;
+    color: #0b0d17;
+    box-shadow: 0 0 30px rgba(120, 80, 255, 0.3);
+}
 
-        body.dark-theme #theme-selector {
-            background: #1a2233;
-            border-color: rgba(255, 255, 255, 0.04);
-        }
+body.dark-theme .message {
+    background: #5a1a2a;
+    color: #ffb0b8;
+    border: 1px solid rgba(255, 80, 80, 0.2);
+}
 
-        body.dark-theme #theme-selector h2 {
-            color: #e2e8f0;
-        }
+/* ---- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ (акцент) ---- */
+.theme-toggle {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    background: #f0ecff;
+    border: none;
+    border-radius: 40px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1e36;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
 
-        body.dark-theme .theme-btn {
-            background: #2a3346;
-            color: #e2e8f0;
-            border-color: #3a445a;
-        }
+body.dark-theme .theme-toggle {
+    background: #8a6aff;
+    color: #f0ecff;
+    box-shadow: 0 4px 24px rgba(120, 80, 255, 0.3);
+}
 
-        body.dark-theme .theme-btn:hover {
-            background: #3a445a;
-            border-color: #4a5a7a;
-        }
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
 
-        body.dark-theme .theme-btn.selected {
-            border-color: #a78bfa;
-            background: #a78bfa;
-            color: #0b0e17;
-        }
+.theme-toggle:active {
+    transform: scale(0.95);
+}
 
-        body.dark-theme .message {
-            background: #7f1d1d;
-            color: #fecaca;
-        }
-
-        /* ---- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ ---- */
-        .theme-toggle {
-            position: fixed;
-            top: 16px;
-            right: 16px;
-            background: #ffffff;
-            border: none;
-            border-radius: 40px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: #1e293b;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-        }
-
-        body.dark-theme .theme-toggle {
-            background: #2a3346;
-            color: #e2e8f0;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-        }
-
-        .theme-toggle:active {
-            transform: scale(0.95);
-        }
-
-        @media (max-width: 500px) {
-            .theme-toggle {
-                top: 12px;
-                right: 12px;
-                padding: 6px 12px;
-                font-size: 0.8rem;
-            }
-        }
+@media (max-width: 500px) {
+    .theme-toggle {
+        top: 12px;
+        right: 12px;
+        padding: 6px 14px;
+        font-size: 0.8rem;
+    }
+}
     </style>
 </head>
 
