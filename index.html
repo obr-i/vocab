@@ -916,16 +916,21 @@
 
             // ---- ИНИЦИАЛИЗАЦИЯ ----
             if (cards.length === 0) {
-                patternDisplay.textContent = 'Нет данных';
-                answerDisplay.textContent = 'Ошибка загрузки';
-                noteFrontDisplay.style.display = 'none';
-                noteBackDisplay.style.display = 'none';
-                counterEl.textContent = '0 / 0';
-                prevBtn.disabled = true;
-                nextBtn.disabled = true;
-            } else {
-                updateCardData(0, true);
+            patternDisplay.textContent = 'Нет данных';
+            answerDisplay.textContent = 'Ошибка загрузки';
+            noteFrontDisplay.style.display = 'none';
+            noteBackDisplay.style.display = 'none';
+            counterEl.textContent = '0 / 0';
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;} 
+            else {
+            // Перемешиваем карточки при старте
+            for (let i = cards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [cards[i], cards[j]] = [cards[j], cards[i]];
             }
+            updateCardData(0, true);
+        }
         })();
     </script>
 </body>
