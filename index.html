@@ -64,7 +64,7 @@
             max-width: 480px;
             margin: 0 auto 20px;
             cursor: pointer;
-            touch-action: none; /* чтобы полностью управлять жестами */
+            touch-action: none;
         }
 
         .card {
@@ -80,11 +80,6 @@
 
         .card.flipped {
             transform: rotateY(180deg);
-        }
-
-        /* Быстрый автоматический переворот */
-        .card.fast-flip {
-            transition-duration: 0.3s;
         }
 
         .card-face {
@@ -240,19 +235,7 @@
     </style>
 </head>
 <body>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-<script>
-    // Проверяем, запущено ли приложение внутри Telegram
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.ready();
-        tg.expand();
-        // Здесь можно добавить дополнительные настройки для Telegram, например, цвет фона
-    } else {
-        // Если открыто в обычном браузере, ничего не делаем или подстраиваемся
-        console.log('Запущено вне Telegram');
-    }
-</script>
+
 <div class="container">
     <h1>📚 Словарные слова</h1>
     <div class="subtitle">
@@ -634,9 +617,8 @@
         // ---- СОСТОЯНИЕ ----
         let currentIndex = 0;
         let cards = [...pairs];
-        let isAnimating = false;       // блокировка во время анимации
-        let pendingUpdate = null;      // функция для выполнения после анимации
-        let isAutoFlip = false;        // флаг автоматического переворота
+        let isAnimating = false;
+        let pendingUpdate = null; // функция для выполнения после анимации
 
         const cardEl = document.getElementById('card');
         const patternDisplay = document.getElementById('patternDisplay');
@@ -670,37 +652,32 @@
                 noteBackDisplay.style.display = 'none';
             }
 
-            // Сбрасываем flip без анимации
-            cardEl.classList.remove('flipped');
-            cardEl.classList.remove('fast-flip');
             counterEl.textContent = `${index + 1} / ${cards.length}`;
             prevBtn.disabled = (index === 0);
             nextBtn.disabled = (index === cards.length - 1);
         }
 
-        // ---- ПЕРЕХОД НА НОВУЮ КАРТОЧКУ С ПЛАВНОСТЬЮ ----
-        function changeCard(newIndex) {
+        // ---- ОБЩАЯ ФУНКЦИЯ ДЛЯ СМЕНЫ КАРТОЧКИ С АНИМАЦИЕЙ ----
+        function changeCardWithAnimation(newIndex, flipBackIfNeeded = true) {
             if (isAnimating) return;
             if (newIndex < 0 || newIndex >= cards.length) return;
 
             const isFlipped = cardEl.classList.contains('flipped');
 
-            if (isFlipped) {
-                // Автоматический переворот (быстрый)
+            if (isFlipped && flipBackIfNeeded) {
+                // Если карточка перевёрнута, сначала переворачиваем обратно,
+                // потом по окончании анимации обновляем данные
                 isAnimating = true;
-                isAutoFlip = true;
-                cardEl.classList.add('fast-flip');
                 cardEl.classList.remove('flipped');
 
-                pendingUpdate = () => {
+                const onTransitionEnd = function() {
+                    cardEl.removeEventListener('transitionend', onTransitionEnd);
+                    // После завершения обратного переворота обновляем данные
                     currentIndex = newIndex;
                     updateCardData(currentIndex);
                     isAnimating = false;
-                    isAutoFlip = false;
-                    pendingUpdate = null;
-                    // Убираем быстрый класс после завершения
-                    cardEl.classList.remove('fast-flip');
                 };
+                cardEl.addEventListener('transitionend', onTransitionEnd);
             } else {
                 // Если не перевернута – меняем сразу
                 currentIndex = newIndex;
@@ -708,25 +685,16 @@
             }
         }
 
-        // ---- ОБРАБОТЧИК ОКОНЧАНИЯ АНИМАЦИИ ----
-        cardEl.addEventListener('transitionend', function() {
-            if (pendingUpdate) {
-                const fn = pendingUpdate;
-                pendingUpdate = null;
-                fn();
-            }
-        });
-
-        // ---- НАВИГАЦИЯ ----
+        // ---- НАВИГАЦИЯ (стрелки и свайпы) ----
         function showNext() {
             if (currentIndex < cards.length - 1) {
-                changeCard(currentIndex + 1);
+                changeCardWithAnimation(currentIndex + 1, true);
             }
         }
 
         function showPrev() {
             if (currentIndex > 0) {
-                changeCard(currentIndex - 1);
+                changeCardWithAnimation(currentIndex - 1, true);
             }
         }
 
@@ -739,15 +707,33 @@
             }
             currentIndex = 0;
             cardEl.classList.remove('flipped');
-            cardEl.classList.remove('fast-flip');
             updateCardData(0);
         }
 
-        // ---- ПЕРЕВОРОТ (ручной) ----
+        // ---- ПЕРЕВОРОТ (простой) ----
         function toggleFlip() {
             if (isAnimating) return;
-            // Если карточка не в процессе анимации, переворачиваем (стандартная скорость)
             cardEl.classList.toggle('flipped');
+        }
+
+        // ---- НОВАЯ ЛОГИКА ДЛЯ КАСАНИЯ/КЛИКА ----
+        function handleTap() {
+            if (isAnimating) return;
+
+            if (cardEl.classList.contains('flipped')) {
+                // Карточка перевёрнута
+                if (currentIndex < cards.length - 1) {
+                    // Есть следующая – сначала переворачиваем обратно, потом обновляем данные
+                    // используем changeCardWithAnimation
+                    changeCardWithAnimation(currentIndex + 1, true);
+                } else {
+                    // Нет следующей – просто переворачиваем обратно
+                    toggleFlip();
+                }
+            } else {
+                // Карточка не перевёрнута – переворачиваем
+                toggleFlip();
+            }
         }
 
         // ---- ОБРАБОТЧИКИ СОБЫТИЙ (тач + мышь) ----
@@ -775,11 +761,9 @@
 
         cardWrapper.addEventListener('touchend', function(e) {
             if (touchMoved) {
-                // Это был свайп или движение
                 const dx = e.changedTouches[0].clientX - touchStartX;
                 const dy = e.changedTouches[0].clientY - touchStartY;
                 if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-                    // Горизонтальный свайп
                     e.preventDefault();
                     swipeHandled = true;
                     if (dx < 0) {
@@ -788,13 +772,10 @@
                         showPrev();
                     }
                 }
-                // Иначе игнорируем
             } else {
-                // Короткое касание без движения – переворот
                 e.preventDefault();
-                toggleFlip();
+                handleTap();
             }
-            // Сброс
             touchStartX = 0;
             touchStartY = 0;
             touchMoved = false;
@@ -802,30 +783,18 @@
 
         // Для десктопа – клик
         cardWrapper.addEventListener('click', function(e) {
-            // Если на десктопе клик, но мы не хотим, чтобы срабатывал после свайпа на тач,
-            // но на десктопе свайпа нет, так что просто переворот.
-            // Однако на мобильных click срабатывает после touchend с задержкой, мы уже обработали.
-            // Чтобы избежать двойного срабатывания, проверяем, был ли уже обработан тач.
-            // Для простоты: если это событие click, и мы на мобильном устройстве, возможно, оно уже обработано.
-            // Но мы добавим проверку: если тач уже обработал, то игнорируем.
             if (e.pointerType === 'touch' || ('ontouchstart' in window)) {
-                // Если было событие touch, click может прийти позже.
-                // Игнорируем, если touch уже обработал.
                 if (swipeHandled) {
                     e.preventDefault();
                     swipeHandled = false;
                     return;
                 }
-                // Если был тап, мы уже перевернули в touchend, поэтому здесь ничего не делаем.
-                // Но чтобы не сработало дважды, проверим флаг.
                 if (touchMoved === false && touchStartX !== 0) {
-                    // Это был тап, уже обработано
                     e.preventDefault();
                     return;
                 }
             }
-            // Для десктопа – обычный клик
-            toggleFlip();
+            handleTap();
         });
 
         // ---- КЛАВИАТУРА ----
@@ -839,7 +808,7 @@
             } else if (e.key === ' ' || e.key === 'Spacebar') {
                 e.preventDefault();
                 if (!isAnimating) {
-                    toggleFlip();
+                    toggleFlip(); // пробел всегда переворачивает
                 }
             }
         });
