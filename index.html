@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -48,9 +49,11 @@
             color: #64748b;
             margin-bottom: 20px;
         }
+
         .subtitle .hide-on-mobile {
             display: inline;
         }
+
         @media (max-width: 600px) {
             .subtitle .hide-on-mobile {
                 display: none;
@@ -116,7 +119,7 @@
             font-size: 0.85rem;
             color: #64748b;
             margin-top: 6px;
-            background: rgba(0,0,0,0.03);
+            background: rgba(0, 0, 0, 0.03);
             padding: 2px 12px;
             border-radius: 30px;
         }
@@ -148,7 +151,7 @@
             font-size: 0.85rem;
             font-weight: 400;
             color: #94a3b8;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             padding: 4px 14px;
             border-radius: 30px;
             margin-top: 6px;
@@ -214,8 +217,8 @@
             color: #1e293b;
             cursor: pointer;
             transition: 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid rgba(255,255,255,0.4);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             touch-action: manipulation;
             user-select: none;
         }
@@ -226,53 +229,71 @@
         }
 
         @media (max-width: 500px) {
-            .container { padding: 16px 12px 20px; }
-            .card-front .pattern { font-size: 1.6rem; }
-            .card-back .answer { font-size: 1.8rem; }
-            .nav button { width: 56px; height: 56px; font-size: 1.6rem; }
-            .card-front .hint { font-size: 0.6rem; bottom: 12px; }
+            .container {
+                padding: 16px 12px 20px;
+            }
+
+            .card-front .pattern {
+                font-size: 1.6rem;
+            }
+
+            .card-back .answer {
+                font-size: 1.8rem;
+            }
+
+            .nav button {
+                width: 56px;
+                height: 56px;
+                font-size: 1.6rem;
+            }
+
+            .card-front .hint {
+                font-size: 0.6rem;
+                bottom: 12px;
+            }
         }
     </style>
 </head>
+
 <body>
 
-<div class="container">
-    <h1>📚 Словарные слова</h1>
-    <div class="subtitle">
-        Коснись карточки<span class="hide-on-mobile"> или нажми пробел</span>
-    </div>
+    <div class="container">
+        <h1>📚 Словарные слова</h1>
+        <div class="subtitle">
+            Коснись карточки<span class="hide-on-mobile"> или нажми пробел</span>
+        </div>
 
-    <div class="card-wrapper" id="cardWrapper">
-        <div class="card" id="card">
-            <div class="card-face card-front">
-                <span class="pattern" id="patternDisplay"></span>
-                <span class="note-front" id="noteFrontDisplay"></span>
-                <span class="hint">👆 коснись, чтобы увидеть ответ</span>
-            </div>
-            <div class="card-face card-back">
-                <span class="answer" id="answerDisplay"></span>
-                <span class="note-back" id="noteBackDisplay"></span>
+        <div class="card-wrapper" id="cardWrapper">
+            <div class="card" id="card">
+                <div class="card-face card-front">
+                    <span class="pattern" id="patternDisplay"></span>
+                    <span class="note-front" id="noteFrontDisplay"></span>
+                    <span class="hint">👆 коснись, чтобы увидеть ответ</span>
+                </div>
+                <div class="card-face card-back">
+                    <span class="answer" id="answerDisplay"></span>
+                    <span class="note-back" id="noteBackDisplay"></span>
+                </div>
             </div>
         </div>
+
+        <div class="nav">
+            <button id="prevBtn" aria-label="Предыдущая">◀</button>
+            <span class="counter" id="counter">1 / 0</span>
+            <button id="nextBtn" aria-label="Следующая">▶</button>
+        </div>
+
+        <button class="shuffle-btn" id="shuffleBtn">🔀 Перемешать</button>
     </div>
 
-    <div class="nav">
-        <button id="prevBtn" aria-label="Предыдущая">◀</button>
-        <span class="counter" id="counter">1 / 0</span>
-        <button id="nextBtn" aria-label="Следующая">▶</button>
-    </div>
-
-    <button class="shuffle-btn" id="shuffleBtn">🔀 Перемешать</button>
-</div>
-
-<script>
-    (function() {
-        // ---- ДАННЫЕ (ваши списки) ----
-        const wordsRaw = `
+    <script>
+        (function () {
+            // ---- ДАННЫЕ (ваши списки) ----
+            const wordsRaw = `
             абитуриент абонемент абрикос академия аквамарин акварель аккомпанемент аннотация антресоли апелляция аплодировать аппаратура аппетит аромат архитектор асфальт атмосфера аттракцион аукцион багаж багровый бадминтон баланс балкон барельеф баскетбол бассейн берёза бирюзовый богатый богатырь брошюра бюллетень вакцина вариант велосипед вентилятор вермишель вестибюль ветеран винегрет виртуальный виртуоз витраж владелец возражать вокзал волейбол воображать воплотить впечатлить выразительный выражать газон галактика галерея гармония гарнизон геолог герой гипотеза гормон горячий горизонт грамматика грамота громадный громоздкий дебаты декларация декорация деликатес деликатный демократ демонстрировать диалог диапазон динамика дирижёр диспетчер дистанция дисциплина желание жираф жокей жонглёр жюри знакомить знаменитый знаменовать игнорировать идеал иждивенец иллюзия индивид иней инженер инициатива интеллект интеллигент интенсивный интерьер исказить истина кампания (мероприятие) каморка каникулы канитель канонада канцелярия капюшон кардинальный карикатура касатка (птица семейства ласточек) катакомба катастрофа квалификация квитанция кинематограф коварный колдун колебание коллектив коллекция колоссальный колыхать комбинация комедия компания (группа людей, фирма) компетентный компонент компьютер комфорт конверт конкурент континент конференция конфликт конфорка корифей коричневый корзина король косатка (млекопитающее семейства дельфиновых) космос кромешный лабиринт легенда лелеять либерал мажор материал мгновение менталитет меридиан мероприятие метафора механизм минерал минор монолит мораторий мотив мятеж наваждение насекомые наслаждаться недосягаемый новелла обаяние обитать обнаружить обоняние оборона одолеть озорной опекун оптимист оранжерея орбита организовать оригинальный ориентир орнамент осторожный офицер ошеломить палисадник палитра панорама панцирь параграф парадокс парашют патриот пейзаж перила период пессимист подлинный подражать позиция покой поколение полемика полировать поражать поразить посещать правило предварительный презентация президент президиум преобразить преобразовать преодолеть прецедент привилегия примитивный приоритет провинция провоцировать проницательный радиатор рациональный реалист режиссёр резидент резиденция ремесло реставрация реферат реформа рецензия риторика ровесники романтичный салют сатира сварливый свидетель сезон симпатия симптом симфония синхронный сирень система смятение снарядить сокровенный сонет сострадать состязаться социальный спартакиада спокойный стадион стипендия страховать стремиться суверенитет сувенир талант теория территория торжество традиция трафарет тревога трамвай троллейбус тростник тротуар университет уникальный уничтожить утрамбовать фантастика фестиваль фигура финансы фиолетовый фрагмент фразеология хаос характер цемент цивилизация циклон цилиндр цистерна цитата человек чемпион шеренга шоколад шоссе шофёр эволюция экономика эксперимент экспонат экстремальный электроника энциклопедия эстакада (мост)
         `;
 
-        const patternsFromFile = `
+            const patternsFromFile = `
             аб..туриент
             аб..н..мент
             абр..кос
@@ -583,254 +604,281 @@
             эст..када (мост)
         `;
 
-        // ---- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----
-        function extractMainAndNote(str) {
-            const match = str.match(/^([^\s(]+)\s*\(([^)]*)\)$/);
-            if (match) {
-                return { main: match[1], note: `(${match[2]})` };
-            } else {
-                return { main: str, note: '' };
-            }
-        }
-
-        // ---- ПАРСИНГ ----
-        const wordMatches = wordsRaw.match(/(?:[^\s(]+\s*\([^)]*\)|[^\s]+)/g);
-        const wordList = wordMatches ? wordMatches.map(w => w.trim()) : [];
-
-        const patternList = patternsFromFile.split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-
-        const minLen = Math.min(wordList.length, patternList.length);
-        const pairs = [];
-        for (let i = 0; i < minLen; i++) {
-            const p = extractMainAndNote(patternList[i]);
-            const w = extractMainAndNote(wordList[i]);
-            pairs.push({
-                patternMain: p.main,
-                patternNote: p.note,
-                wordMain: w.main,
-                wordNote: w.note
-            });
-        }
-
-        // ---- СОСТОЯНИЕ ----
-        let currentIndex = 0;
-        let cards = [...pairs];
-        let isAnimating = false;
-        let pendingUpdate = null; // функция для выполнения после анимации
-
-        const cardEl = document.getElementById('card');
-        const patternDisplay = document.getElementById('patternDisplay');
-        const noteFrontDisplay = document.getElementById('noteFrontDisplay');
-        const answerDisplay = document.getElementById('answerDisplay');
-        const noteBackDisplay = document.getElementById('noteBackDisplay');
-        const counterEl = document.getElementById('counter');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const shuffleBtn = document.getElementById('shuffleBtn');
-        const cardWrapper = document.getElementById('cardWrapper');
-
-        // ---- ОБНОВЛЕНИЕ ДАННЫХ КАРТОЧКИ (без анимации) ----
-        function updateCardData(index) {
-            const item = cards[index];
-            if (!item) return;
-
-            patternDisplay.textContent = item.patternMain;
-            if (item.patternNote) {
-                noteFrontDisplay.textContent = item.patternNote;
-                noteFrontDisplay.style.display = 'block';
-            } else {
-                noteFrontDisplay.style.display = 'none';
-            }
-
-            answerDisplay.textContent = item.wordMain;
-            if (item.wordNote) {
-                noteBackDisplay.textContent = item.wordNote;
-                noteBackDisplay.style.display = 'block';
-            } else {
-                noteBackDisplay.style.display = 'none';
-            }
-
-            counterEl.textContent = `${index + 1} / ${cards.length}`;
-            prevBtn.disabled = (index === 0);
-            nextBtn.disabled = (index === cards.length - 1);
-        }
-
-        // ---- ОБЩАЯ ФУНКЦИЯ ДЛЯ СМЕНЫ КАРТОЧКИ С АНИМАЦИЕЙ ----
-        function changeCardWithAnimation(newIndex, flipBackIfNeeded = true) {
-            if (isAnimating) return;
-            if (newIndex < 0 || newIndex >= cards.length) return;
-
-            const isFlipped = cardEl.classList.contains('flipped');
-
-            if (isFlipped && flipBackIfNeeded) {
-                // Если карточка перевёрнута, сначала переворачиваем обратно,
-                // потом по окончании анимации обновляем данные
-                isAnimating = true;
-                cardEl.classList.remove('flipped');
-
-                const onTransitionEnd = function() {
-                    cardEl.removeEventListener('transitionend', onTransitionEnd);
-                    // После завершения обратного переворота обновляем данные
-                    currentIndex = newIndex;
-                    updateCardData(currentIndex);
-                    isAnimating = false;
-                };
-                cardEl.addEventListener('transitionend', onTransitionEnd);
-            } else {
-                // Если не перевернута – меняем сразу
-                currentIndex = newIndex;
-                updateCardData(currentIndex);
-            }
-        }
-
-        // ---- НАВИГАЦИЯ (стрелки и свайпы) ----
-        function showNext() {
-            if (currentIndex < cards.length - 1) {
-                changeCardWithAnimation(currentIndex + 1, true);
-            }
-        }
-
-        function showPrev() {
-            if (currentIndex > 0) {
-                changeCardWithAnimation(currentIndex - 1, true);
-            }
-        }
-
-        // ---- ПЕРЕМЕШИВАНИЕ ----
-        function shuffleCards() {
-            if (isAnimating) return;
-            for (let i = cards.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [cards[i], cards[j]] = [cards[j], cards[i]];
-            }
-            currentIndex = 0;
-            cardEl.classList.remove('flipped');
-            updateCardData(0);
-        }
-
-        // ---- ПЕРЕВОРОТ (простой) ----
-        function toggleFlip() {
-            if (isAnimating) return;
-            cardEl.classList.toggle('flipped');
-        }
-
-        // ---- НОВАЯ ЛОГИКА ДЛЯ КАСАНИЯ/КЛИКА ----
-        function handleTap() {
-            if (isAnimating) return;
-
-            if (cardEl.classList.contains('flipped')) {
-                // Карточка перевёрнута
-                if (currentIndex < cards.length - 1) {
-                    // Есть следующая – сначала переворачиваем обратно, потом обновляем данные
-                    // используем changeCardWithAnimation
-                    changeCardWithAnimation(currentIndex + 1, true);
+            // ---- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ----
+            function extractMainAndNote(str) {
+                const match = str.match(/^([^\s(]+)\s*\(([^)]*)\)$/);
+                if (match) {
+                    return { main: match[1], note: `(${match[2]})` };
                 } else {
-                    // Нет следующей – просто переворачиваем обратно
-                    toggleFlip();
+                    return { main: str, note: '' };
                 }
-            } else {
-                // Карточка не перевёрнута – переворачиваем
-                toggleFlip();
             }
-        }
 
-        // ---- ОБРАБОТЧИКИ СОБЫТИЙ (тач + мышь) ----
-        let touchStartX = 0, touchStartY = 0;
-        let touchMoved = false;
-        let swipeHandled = false;
+            // ---- ПАРСИНГ ----
+            const wordMatches = wordsRaw.match(/(?:[^\s(]+\s*\([^)]*\)|[^\s]+)/g);
+            const wordList = wordMatches ? wordMatches.map(w => w.trim()) : [];
 
-        cardWrapper.addEventListener('touchstart', function(e) {
-            const touch = e.touches[0];
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
-            touchMoved = false;
-            swipeHandled = false;
-        }, { passive: true });
+            const patternList = patternsFromFile.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
 
-        cardWrapper.addEventListener('touchmove', function(e) {
-            if (touchStartX === 0 && touchStartY === 0) return;
-            const touch = e.touches[0];
-            const dx = touch.clientX - touchStartX;
-            const dy = touch.clientY - touchStartY;
-            if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
-                touchMoved = true;
+            const minLen = Math.min(wordList.length, patternList.length);
+            const pairs = [];
+            for (let i = 0; i < minLen; i++) {
+                const p = extractMainAndNote(patternList[i]);
+                const w = extractMainAndNote(wordList[i]);
+                pairs.push({
+                    patternMain: p.main,
+                    patternNote: p.note,
+                    wordMain: w.main,
+                    wordNote: w.note
+                });
             }
-        }, { passive: true });
 
-        cardWrapper.addEventListener('touchend', function(e) {
-            if (touchMoved) {
-                const dx = e.changedTouches[0].clientX - touchStartX;
-                const dy = e.changedTouches[0].clientY - touchStartY;
-                if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-                    e.preventDefault();
-                    swipeHandled = true;
-                    if (dx < 0) {
-                        showNext();
+            // ---- СОСТОЯНИЕ ----
+            let currentIndex = 0;
+            let cards = [...pairs];
+            let isAnimating = false;
+            let flipTimer = null;
+
+            const cardEl = document.getElementById('card');
+            const patternDisplay = document.getElementById('patternDisplay');
+            const noteFrontDisplay = document.getElementById('noteFrontDisplay');
+            const answerDisplay = document.getElementById('answerDisplay');
+            const noteBackDisplay = document.getElementById('noteBackDisplay');
+            const counterEl = document.getElementById('counter');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const shuffleBtn = document.getElementById('shuffleBtn');
+            const cardWrapper = document.getElementById('cardWrapper');
+
+            // ---- ОБНОВЛЕНИЕ ДАННЫХ (без анимации) ----
+            function updateCardData(index, updateBack = true) {
+                const item = cards[index];
+                if (!item) return;
+
+                patternDisplay.textContent = item.patternMain;
+                if (item.patternNote) {
+                    noteFrontDisplay.textContent = item.patternNote;
+                    noteFrontDisplay.style.display = 'block';
+                } else {
+                    noteFrontDisplay.style.display = 'none';
+                }
+
+                if (updateBack) {
+                    answerDisplay.textContent = item.wordMain;
+                    if (item.wordNote) {
+                        noteBackDisplay.textContent = item.wordNote;
+                        noteBackDisplay.style.display = 'block';
                     } else {
-                        showPrev();
+                        noteBackDisplay.style.display = 'none';
                     }
                 }
-            } else {
-                e.preventDefault();
+
+                counterEl.textContent = `${index + 1} / ${cards.length}`;
+                prevBtn.disabled = (index === 0);
+                nextBtn.disabled = (index === cards.length - 1);
+            }
+
+            // ---- ФУНКЦИЯ СМЕНЫ КАРТОЧКИ С НОВОЙ ЛОГИКОЙ ----
+            function changeCard(newIndex) {
+                if (isAnimating) return;
+                if (newIndex < 0 || newIndex >= cards.length) return;
+                if (newIndex === currentIndex) return;
+
+                const isFlipped = cardEl.classList.contains('flipped');
+
+                if (isFlipped) {
+                    // Начинаем анимацию обратного переворота
+                    isAnimating = true;
+                    cardEl.classList.remove('flipped');
+
+                    // Сразу обновляем переднюю сторону и очищаем заднюю
+                    // (чтобы не было наложения старого ответа)
+                    const nextItem = cards[newIndex];
+                    patternDisplay.textContent = nextItem.patternMain;
+                    if (nextItem.patternNote) {
+                        noteFrontDisplay.textContent = nextItem.patternNote;
+                        noteFrontDisplay.style.display = 'block';
+                    } else {
+                        noteFrontDisplay.style.display = 'none';
+                    }
+                    // Очищаем заднюю сторону
+                    answerDisplay.textContent = '';
+                    noteBackDisplay.textContent = '';
+                    noteBackDisplay.style.display = 'none';
+
+                    // Устанавливаем таймер на обновление задней стороны через 50 мс
+                    if (flipTimer) clearTimeout(flipTimer);
+                    flipTimer = setTimeout(() => {
+                        // Обновляем заднюю сторону новым ответом
+                        answerDisplay.textContent = nextItem.wordMain;
+                        if (nextItem.wordNote) {
+                            noteBackDisplay.textContent = nextItem.wordNote;
+                            noteBackDisplay.style.display = 'block';
+                        } else {
+                            noteBackDisplay.style.display = 'none';
+                        }
+                        // Обновляем индекс и счётчик
+                        currentIndex = newIndex;
+                        counterEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+                        prevBtn.disabled = (currentIndex === 0);
+                        nextBtn.disabled = (currentIndex === cards.length - 1);
+                        isAnimating = false;
+                        flipTimer = null;
+                    }, 70);
+                } else {
+                    // Если карточка не перевёрнута – просто меняем данные
+                    currentIndex = newIndex;
+                    updateCardData(currentIndex, true);
+                }
+            }
+
+            // ---- НАВИГАЦИЯ ----
+            function showNext() {
+                if (currentIndex < cards.length - 1) {
+                    changeCard(currentIndex + 1);
+                }
+            }
+
+            function showPrev() {
+                if (currentIndex > 0) {
+                    changeCard(currentIndex - 1);
+                }
+            }
+
+            // ---- ПЕРЕМЕШИВАНИЕ ----
+            function shuffleCards() {
+                if (isAnimating) return;
+                if (flipTimer) {
+                    clearTimeout(flipTimer);
+                    flipTimer = null;
+                }
+                for (let i = cards.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [cards[i], cards[j]] = [cards[j], cards[i]];
+                }
+                currentIndex = 0;
+                cardEl.classList.remove('flipped');
+                updateCardData(0, true);
+            }
+
+            // ---- ПЕРЕВОРОТ (простой) ----
+            function toggleFlip() {
+                if (isAnimating) return;
+                cardEl.classList.toggle('flipped');
+            }
+
+            // ---- ОБРАБОТЧИК КАСАНИЯ/КЛИКА ----
+            function handleTap() {
+                if (isAnimating) return;
+
+                if (cardEl.classList.contains('flipped')) {
+                    if (currentIndex < cards.length - 1) {
+                        changeCard(currentIndex + 1);
+                    } else {
+                        toggleFlip(); // если последняя – просто переворачиваем обратно
+                    }
+                } else {
+                    toggleFlip();
+                }
+            }
+
+            // ---- ОБРАБОТЧИКИ СОБЫТИЙ (тач + мышь) ----
+            let touchStartX = 0, touchStartY = 0;
+            let touchMoved = false;
+            let swipeHandled = false;
+
+            cardWrapper.addEventListener('touchstart', function (e) {
+                const touch = e.touches[0];
+                touchStartX = touch.clientX;
+                touchStartY = touch.clientY;
+                touchMoved = false;
+                swipeHandled = false;
+            }, { passive: true });
+
+            cardWrapper.addEventListener('touchmove', function (e) {
+                if (touchStartX === 0 && touchStartY === 0) return;
+                const touch = e.touches[0];
+                const dx = touch.clientX - touchStartX;
+                const dy = touch.clientY - touchStartY;
+                if (Math.abs(dx) > 10 || Math.abs(dy) > 10) {
+                    touchMoved = true;
+                }
+            }, { passive: true });
+
+            cardWrapper.addEventListener('touchend', function (e) {
+                if (touchMoved) {
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    const dy = e.changedTouches[0].clientY - touchStartY;
+                    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+                        e.preventDefault();
+                        swipeHandled = true;
+                        if (dx < 0) {
+                            showNext();
+                        } else {
+                            showPrev();
+                        }
+                    }
+                } else {
+                    e.preventDefault();
+                    handleTap();
+                }
+                touchStartX = 0;
+                touchStartY = 0;
+                touchMoved = false;
+            }, { passive: false });
+
+            cardWrapper.addEventListener('click', function (e) {
+                if (e.pointerType === 'touch' || ('ontouchstart' in window)) {
+                    if (swipeHandled) {
+                        e.preventDefault();
+                        swipeHandled = false;
+                        return;
+                    }
+                    if (touchMoved === false && touchStartX !== 0) {
+                        e.preventDefault();
+                        return;
+                    }
+                }
                 handleTap();
-            }
-            touchStartX = 0;
-            touchStartY = 0;
-            touchMoved = false;
-        }, { passive: false });
+            });
 
-        // Для десктопа – клик
-        cardWrapper.addEventListener('click', function(e) {
-            if (e.pointerType === 'touch' || ('ontouchstart' in window)) {
-                if (swipeHandled) {
+            // ---- КЛАВИАТУРА ----
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'ArrowLeft') {
                     e.preventDefault();
-                    swipeHandled = false;
-                    return;
-                }
-                if (touchMoved === false && touchStartX !== 0) {
+                    showPrev();
+                } else if (e.key === 'ArrowRight') {
                     e.preventDefault();
-                    return;
+                    showNext();
+                } else if (e.key === ' ' || e.key === 'Spacebar') {
+                    e.preventDefault();
+                    if (!isAnimating) {
+                        toggleFlip();
+                    }
                 }
+            });
+
+            // ---- КНОПКИ ----
+            prevBtn.addEventListener('click', showPrev);
+            nextBtn.addEventListener('click', showNext);
+            shuffleBtn.addEventListener('click', shuffleCards);
+
+            // ---- ИНИЦИАЛИЗАЦИЯ ----
+            if (cards.length === 0) {
+                patternDisplay.textContent = 'Нет данных';
+                answerDisplay.textContent = 'Ошибка загрузки';
+                noteFrontDisplay.style.display = 'none';
+                noteBackDisplay.style.display = 'none';
+                counterEl.textContent = '0 / 0';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+            } else {
+                updateCardData(0, true);
             }
-            handleTap();
-        });
-
-        // ---- КЛАВИАТУРА ----
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                showPrev();
-            } else if (e.key === 'ArrowRight') {
-                e.preventDefault();
-                showNext();
-            } else if (e.key === ' ' || e.key === 'Spacebar') {
-                e.preventDefault();
-                if (!isAnimating) {
-                    toggleFlip(); // пробел всегда переворачивает
-                }
-            }
-        });
-
-        // ---- КНОПКИ ----
-        prevBtn.addEventListener('click', showPrev);
-        nextBtn.addEventListener('click', showNext);
-        shuffleBtn.addEventListener('click', shuffleCards);
-
-        // ---- ИНИЦИАЛИЗАЦИЯ ----
-        if (cards.length === 0) {
-            patternDisplay.textContent = 'Нет данных';
-            answerDisplay.textContent = 'Ошибка загрузки';
-            noteFrontDisplay.style.display = 'none';
-            noteBackDisplay.style.display = 'none';
-            counterEl.textContent = '0 / 0';
-            prevBtn.disabled = true;
-            nextBtn.disabled = true;
-        } else {
-            updateCardData(0);
-        }
-    })();
-</script>
+        })();
+    </script>
 </body>
+
 </html>
