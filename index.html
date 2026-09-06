@@ -704,13 +704,14 @@
                         noteFrontDisplay.style.display = 'none';
                     }
                     // Очищаем заднюю сторону
-                    answerDisplay.textContent = '';
-                    noteBackDisplay.textContent = '';
-                    noteBackDisplay.style.display = 'none';
+
 
                     // Устанавливаем таймер на обновление задней стороны через 50 мс
                     if (flipTimer) clearTimeout(flipTimer);
                     flipTimer = setTimeout(() => {
+                        answerDisplay.textContent = '';
+                        noteBackDisplay.textContent = '';
+                        noteBackDisplay.style.display = 'none';
                         // Обновляем заднюю сторону новым ответом
                         answerDisplay.textContent = nextItem.wordMain;
                         if (nextItem.wordNote) {
@@ -726,7 +727,7 @@
                         nextBtn.disabled = (currentIndex === cards.length - 1);
                         isAnimating = false;
                         flipTimer = null;
-                    }, 70);
+                    }, 299);
                 } else {
                     // Если карточка не перевёрнута – просто меняем данные
                     currentIndex = newIndex;
@@ -747,6 +748,10 @@
                 }
             }
 
+
+
+
+
             // ---- ПЕРЕМЕШИВАНИЕ ----
             function shuffleCards() {
                 if (isAnimating) return;
@@ -754,13 +759,55 @@
                     clearTimeout(flipTimer);
                     flipTimer = null;
                 }
+                // Перемешиваем массив
                 for (let i = cards.length - 1; i > 0; i--) {
                     const j = Math.floor(Math.random() * (i + 1));
                     [cards[i], cards[j]] = [cards[j], cards[i]];
                 }
-                currentIndex = 0;
-                cardEl.classList.remove('flipped');
-                updateCardData(0, true);
+
+                const isFlipped = cardEl.classList.contains('flipped');
+                if (isFlipped) {
+                    // Начинаем обратный переворот
+                    isAnimating = true;
+                    cardEl.classList.remove('flipped');
+
+                    // Мгновенно очищаем заднюю сторону
+                    answerDisplay.textContent = '';
+                    noteBackDisplay.textContent = '';
+                    noteBackDisplay.style.display = 'none';
+
+                    // Обновляем переднюю сторону на первое слово нового порядка
+                    const firstItem = cards[0];
+                    patternDisplay.textContent = firstItem.patternMain;
+                    if (firstItem.patternNote) {
+                        noteFrontDisplay.textContent = firstItem.patternNote;
+                        noteFrontDisplay.style.display = 'block';
+                    } else {
+                        noteFrontDisplay.style.display = 'none';
+                    }
+
+                    // Через 299 мс добавляем новый ответ
+                    if (flipTimer) clearTimeout(flipTimer);
+                    flipTimer = setTimeout(() => {
+                        answerDisplay.textContent = firstItem.wordMain;
+                        if (firstItem.wordNote) {
+                            noteBackDisplay.textContent = firstItem.wordNote;
+                            noteBackDisplay.style.display = 'block';
+                        } else {
+                            noteBackDisplay.style.display = 'none';
+                        }
+                        currentIndex = 0;
+                        counterEl.textContent = `${currentIndex + 1} / ${cards.length}`;
+                        prevBtn.disabled = (currentIndex === 0);
+                        nextBtn.disabled = (currentIndex === cards.length - 1);
+                        isAnimating = false;
+                        flipTimer = null;
+                    }, 299);
+                } else {
+                    // Если не перевернута – меняем сразу
+                    currentIndex = 0;
+                    updateCardData(0, true);
+                }
             }
 
             // ---- ПЕРЕВОРОТ (простой) ----
@@ -854,9 +901,7 @@
                     showNext();
                 } else if (e.key === ' ' || e.key === 'Spacebar') {
                     e.preventDefault();
-                    if (!isAnimating) {
-                        toggleFlip();
-                    }
+                    handleTap(); // вызывает ту же логику, что и касание
                 }
             });
 
