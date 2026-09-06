@@ -81,6 +81,7 @@
             will-change: transform;
             transform: translateZ(0);
             backface-visibility: hidden;
+            will-change: transform;
         }
 
         .card.flipped {
@@ -104,6 +105,7 @@
             background: #ffffff;
             border: 1px solid rgba(255, 255, 255, 0.8);
             box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.02);
+            will-change: transform, opacity;
         }
 
         .card-front {
@@ -254,11 +256,215 @@
                 bottom: 12px;
             }
         }
+                /* ---------- ТЁМНАЯ ТЕМА (плавные переходы, контрастная карточка) ---------- */
+        body {
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+
+        .container {
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .card-front,
+        .card-back,
+        .card {
+            transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, transform 0.75s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav button,
+        .shuffle-btn,
+        .action-btn,
+        .theme-btn,
+        .theme-toggle {
+            transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        .counter,
+        .subtitle,
+        h1,
+        #theme-selector h2,
+        .message {
+            transition: color 0.4s ease, background 0.4s ease;
+        }
+
+        #theme-selector {
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        /* ---- ТЁМНЫЙ ФОН (почти чёрный) ---- */
+        body.dark-theme {
+            background: linear-gradient(145deg, #070a12 0%, #0b0e17 100%);
+        }
+
+        body.dark-theme .container {
+            background: rgba(11, 14, 23, 0.85);
+            backdrop-filter: blur(12px);
+            border-color: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7);
+        }
+
+        body.dark-theme h1 {
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .subtitle {
+            color: #94a3b8;
+        }
+
+        /* ---- ЛИЦЕВАЯ СТОРОНА (чуть светлее фона, без контура) ---- */
+        body.dark-theme .card-front {
+            background: #1a2233;
+            /* тёмно-серый с синевой */
+            color: #f1f5f9;
+            border-color: rgba(255, 255, 255, 0.04);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02), 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-theme .card-front .pattern {
+            color: #f8fafc;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        body.dark-theme .card-front .note-front {
+            color: #94a3b8;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        body.dark-theme .card-front .hint {
+            color: #64748b;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* ---- ОБОРОТНАЯ СТОРОНА (насыщенный фиолетовый, как Opera GX) ---- */
+        body.dark-theme .card-back {
+            background: #1f0e42;
+            /* тёмно-фиолетовый */
+            color: #f8fafc;
+            border-color: rgba(167, 139, 250, 0.15);
+            box-shadow: inset 0 0 0 1px rgba(167, 139, 250, 0.1), 0 8px 40px rgba(88, 28, 135, 0.3);
+        }
+
+        body.dark-theme .card-back .answer {
+            color: #f8fafc;
+            text-shadow: 0 0 20px rgba(167, 139, 250, 0.15);
+        }
+
+        body.dark-theme .card-back .note-back {
+            color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+
+        /* ---- КНОПКИ И ЭЛЕМЕНТЫ УПРАВЛЕНИЯ ---- */
+        body.dark-theme .nav button {
+            background: #2a3346;
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.06);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-theme .nav button:active {
+            background: #3a445a;
+        }
+
+        body.dark-theme .nav button:disabled {
+            opacity: 0.25;
+        }
+
+        body.dark-theme .counter {
+            background: rgba(26, 34, 51, 0.8);
+            color: #cbd5e1;
+        }
+
+        body.dark-theme .shuffle-btn,
+        body.dark-theme .action-btn {
+            background: #2a3346;
+            color: #e2e8f0;
+            border-color: rgba(255, 255, 255, 0.06);
+        }
+
+        body.dark-theme .shuffle-btn:active,
+        body.dark-theme .action-btn:active {
+            background: #3a445a;
+        }
+
+        body.dark-theme #theme-selector {
+            background: #1a2233;
+            border-color: rgba(255, 255, 255, 0.04);
+        }
+
+        body.dark-theme #theme-selector h2 {
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .theme-btn {
+            background: #2a3346;
+            color: #e2e8f0;
+            border-color: #3a445a;
+        }
+
+        body.dark-theme .theme-btn:hover {
+            background: #3a445a;
+            border-color: #4a5a7a;
+        }
+
+        body.dark-theme .theme-btn.selected {
+            border-color: #a78bfa;
+            background: #a78bfa;
+            color: #0b0e17;
+        }
+
+        body.dark-theme .message {
+            background: #7f1d1d;
+            color: #fecaca;
+        }
+
+        /* ---- КНОПКА ПЕРЕКЛЮЧЕНИЯ ТЕМЫ ---- */
+        .theme-toggle {
+            position: fixed;
+            top: 16px;
+            right: 16px;
+            background: #ffffff;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1e293b;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        body.dark-theme .theme-toggle {
+            background: #2a3346;
+            color: #e2e8f0;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.05);
+        }
+
+        .theme-toggle:active {
+            transform: scale(0.95);
+        }
+
+        @media (max-width: 500px) {
+            .theme-toggle {
+                top: 12px;
+                right: 12px;
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 
 <body>
-
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">🌙</button>
     <div class="container">
         <h1>📚 Словарные слова</h1>
         <div class="subtitle">
@@ -932,6 +1138,22 @@
             updateCardData(0, true);
         }
         })();
+        // ---- ТЁМНАЯ ТЕМА ----
+        const themeToggle = document.getElementById('themeToggle');
+
+        // Проверяем сохранённую тему в localStorage
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeToggle.textContent = '☀️';
+        }
+
+        themeToggle.addEventListener('click', function () {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            themeToggle.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
     </script>
 </body>
 
